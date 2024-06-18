@@ -1,0 +1,15 @@
+services:
+  app:
+    build: .
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/home/node/app
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Mengo@2019
+      POSTGRES_DB: partners-api
+    ports:
+      - 5432:5432
