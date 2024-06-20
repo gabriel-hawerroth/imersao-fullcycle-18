@@ -59,15 +59,11 @@ func (e *Event) Validate() error {
 }
 
 func (e *Event) AddSpot(name string) (*Spot, error) {
-	spot := &Spot{
-		ID:       "spot_" + name,
-		EventId:  e.ID,
-		Name:     name,
-		Status:   SpotStatusAvailable,
-		TicketId: "",
+	spot, err := NewSpot(e, name)
+	if err != nil {
+		return nil, err
 	}
 
 	e.Spots = append(e.Spots, *spot)
-
 	return spot, nil
 }
