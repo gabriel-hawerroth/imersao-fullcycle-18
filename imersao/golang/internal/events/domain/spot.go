@@ -25,16 +25,16 @@ const (
 
 type Spot struct {
 	ID       string
-	EventId  string
+	EventID  string
 	Name     string
 	Status   SpotStatus
-	TicketId string
+	TicketID string
 }
 
 func NewSpot(event *Event, name string) (*Spot, error) {
 	spot := &Spot{
 		ID:      uuid.New().String(),
-		EventId: event.ID,
+		EventID: event.ID,
 		Name:    name,
 		Status:  SpotStatusAvailable,
 	}
@@ -50,6 +50,9 @@ func (s *Spot) Reserve(ticketId string) error {
 	if s.Status == SpotStatusSold {
 		return ErrSpotAlreadyReserved
 	}
+
+	s.Status = SpotStatusSold
+	s.TicketID = ticketId
 
 	return nil
 }
