@@ -1,6 +1,10 @@
 package domain
 
-import "errors"
+import (
+	"errors"
+
+	"github.com/google/uuid"
+)
 
 type TicketKind string
 
@@ -10,8 +14,8 @@ var (
 )
 
 const (
-	TicketTypeHalf TicketKind = "half"
-	TicketTypeFull TicketKind = "full"
+	TicketKindHalf TicketKind = "half"
+	TicketKindFull TicketKind = "full"
 )
 
 type Ticket struct {
@@ -22,12 +26,33 @@ type Ticket struct {
 	Price      float64
 }
 
-func IsValidTicketType(ticketType TicketKind) bool {
-	return ticketType == TicketTypeHalf || ticketType == TicketTypeFull
+func NewTicket(event *Event, spot *Spot, ticketType TicketKind) (*Ticket, error) {
+	if !IsValidTicketKind(ticketType) {
+		return nil, ErrInvalidTicketKind
+	}
+
+	ticket := &Ticket{
+		ID:         uuid.New().String(),
+		EventID:    event.ID,
+		Spot:       spot,
+		TicketKind: ticketType,
+		Price:      event.Price,
+	}
+
+	ticket.CalculatePrice()
+
+	if err := ticket.Validate(); err != nil {
+		return nil, err
+	}
+	return ticket, nil
+}
+
+func IsValidTicketKind(ticketKind TicketKind) bool {
+	return ticketKind == TicketKindHalf || ticketKind == TicketKindFull
 }
 
 func (t *Ticket) CalculatePrice() {
-	if t.TicketKind == TicketTypeHalf {
+	if t.TicketKind == TicketKindHalf {
 		t.Price /= 2
 	}
 }

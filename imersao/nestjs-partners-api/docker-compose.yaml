@@ -9,7 +9,7 @@ services:
     image: postgres:latest
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Mengo@2019
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: partners-api
     ports:
       - 5432:5432

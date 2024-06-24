@@ -13,9 +13,9 @@ type postgresEventRepository struct {
 	db *sql.DB
 }
 
-// func NewPostgresEventRepository(db *sql.DB) (domain.EventRepository, error) {
-// 	return &postgresEventRepository{db: db}, nil
-// }
+func NewPostgresEventRepository(db *sql.DB) (domain.EventRepository, error) {
+	return &postgresEventRepository{db: db}, nil
+}
 
 // ListEvents returns all events with their associated spots and tickets.
 func (r *postgresEventRepository) ListEvents() ([]domain.Event, error) {
